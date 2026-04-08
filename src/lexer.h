@@ -6,6 +6,7 @@ typedef enum {
     ASSIGN, EQUAL,
     NOT, NOTEQ,
     LESS, LESSEQ,
+    SEMICOLON,
     GREATER, GREATEREQ,
     ADD, SUB, MUL, DIV,
     AND, OR,
@@ -15,7 +16,7 @@ typedef enum {
     LACC, RACC,
     
     // Keywords
-    BREAK, CHAR, DOUBLE, ELSE, FOR, IF, INT,
+    BREAK, CHAR, DOUBLE, ELSE, FOR, IF, INT_KW,
     RETURN, STRUCT, VOID, WHILE
 } TokenCode;
 

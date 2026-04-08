@@ -46,12 +46,51 @@ void showTokens()
     Token *tk = tokens;
     while (tk) {
         switch (tk->code) {
-            case ID:        printf("ID(%s)\n",    tk->text); break;
-            case CT_INT:    printf("CT_INT(%ld)\n", tk->i);  break;
-            case CT_REAL:   printf("CT_REAL(%g)\n", tk->r);  break;
-            case CT_CHAR:   printf("CT_CHAR(%ld)\n", tk->i); break;
-            case CT_STRING: printf("CT_STRING(%s)\n", tk->text); break;
-            default:        printf("%d\n", tk->code); break;
+            // literale
+            case ID:        printf("ID(%s)\n",       tk->text);       break;
+            case CT_INT:    printf("CT_INT(%ld)\n",  tk->i);          break;
+            case CT_REAL:   printf("CT_REAL(%g)\n",  tk->r);          break;
+            case CT_CHAR:   printf("CT_CHAR(%c)\n",  (char)tk->i);    break;
+            case CT_STRING: printf("CT_STRING(%s)\n",tk->text);       break;
+            // keywords
+            case BREAK:     printf("BREAK\n");     break;
+            case CHAR:      printf("CHAR\n");      break;
+            case DOUBLE:    printf("DOUBLE\n");    break;
+            case ELSE:      printf("ELSE\n");      break;
+            case FOR:       printf("FOR\n");       break;
+            case IF:        printf("IF\n");        break;
+            case INT_KW:    printf("INT\n");       break;
+            case RETURN:    printf("RETURN\n");    break;
+            case STRUCT:    printf("STRUCT\n");    break;
+            case VOID:      printf("VOID\n");      break;
+            case WHILE:     printf("WHILE\n");     break;
+            // operatori
+            case ASSIGN:    printf("ASSIGN\n");    break;
+            case EQUAL:     printf("EQUAL\n");     break;
+            case NOT:       printf("NOT\n");       break;
+            case NOTEQ:     printf("NOTEQ\n");     break;
+            case LESS:      printf("LESS\n");      break;
+            case LESSEQ:    printf("LESSEQ\n");    break;
+            case GREATER:   printf("GREATER\n");   break;
+            case GREATEREQ: printf("GREATEREQ\n"); break;
+            case ADD:       printf("ADD\n");       break;
+            case SUB:       printf("SUB\n");       break;
+            case MUL:       printf("MUL\n");       break;
+            case DIV:       printf("DIV\n");       break;
+            case AND:       printf("AND\n");       break;
+            case OR:        printf("OR\n");        break;
+            case DOT:       printf("DOT\n");       break;
+            case COMMA:     printf("COMMA\n");     break;
+            case SEMICOLON: printf("SEMICOLON\n"); break;
+            // paranteze
+            case LPAR:      printf("LPAR\n");      break;
+            case RPAR:      printf("RPAR\n");      break;
+            case LBRACKET:  printf("LBRACKET\n");  break;
+            case RBRACKET:  printf("RBRACKET\n");  break;
+            case LACC:      printf("LACC\n");      break;
+            case RACC:      printf("RACC\n");      break;
+            case END:       printf("END\n");       break;
+            default:        printf("UNKNOWN(%d)\n", tk->code); break;
         }
         tk = tk->next;
     }
