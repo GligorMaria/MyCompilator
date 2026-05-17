@@ -1,6 +1,7 @@
 #include "utils.h"
-#include "lexer.h"   // Token is fully defined here
+#include "lexer.h"  
 
+//eroare generala
 void err(const char *fmt, ...)
 {
     va_list va;
@@ -12,6 +13,7 @@ void err(const char *fmt, ...)
     exit(-1);
 }
 
+//eroare cu nr liniei unde s-a gasit problema
 void tkerr(const Token *tk, const char *fmt, ...)
 {
     va_list va;

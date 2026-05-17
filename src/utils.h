@@ -7,6 +7,7 @@
 
 typedef struct _Token Token;
 
+// macro care alocă memorie și oprește programul dacă nu e suficientă
 #define SAFEALLOC(var, Type) \
     if ((var = (Type*)malloc(sizeof(Type))) == NULL) err("not enough memory")
 

@@ -11,7 +11,7 @@ int line = 1;
 
 static const char *pCrtCh = NULL;
 
-// ── helpers ──────────────────────────────────────────────────────────────────
+//helpers 
 
 char *createString(const char *start, const char *end)
 {
@@ -115,8 +115,7 @@ void initLexer(const char *p)
 {
     pCrtCh = p;
 }
-
-// ── getNextToken ──────────────────────────────────────────────────────────────
+ 
 
 int getNextToken()
 {
@@ -129,7 +128,7 @@ int getNextToken()
         ch = *pCrtCh;
         switch (state) {
 
-        // ── STATE 0: initial dispatch ─────────────────────────────────────────
+        //  STATE 0: initial dispatch 
         case 0:
             if (isalpha(ch) || ch == '_') {
                 pStartCh = pCrtCh;
@@ -188,7 +187,7 @@ int getNextToken()
             else tkerr(addTk(END), "invalid character: %c", ch);
             break;
 
-        // ── STATES 1-2: identifier / keyword ─────────────────────────────────
+        // STATES 1-2: identifier / keyword
         case 1:
             if (isalnum(ch) || ch == '_') pCrtCh++;
             else state = 2;
@@ -214,7 +213,7 @@ int getNextToken()
             return tk->code;
         }
 
-        // ── STATES 8-9: decimal integer [1-9][0-9]* ──────────────────────────
+        // STATES 8-9: decimal integer [1-9][0-9]* 
         // poate deveni CT_REAL daca e urmat de '.' sau 'e'/'E'
         case 8:
             if (ch >= '0' && ch <= '9') pCrtCh++;
@@ -235,7 +234,7 @@ int getNextToken()
             return CT_INT;
         }
 
-        // ── STATES 10-14: incepe cu '0' → octal / hex / real ─────────────────
+        // STATES 10-14: incepe cu '0' → octal / hex / real 
         case 10:
             if (ch == 'x' || ch == 'X') { pCrtCh++; state = 11; }     // hex
             else if (ch >= '0' && ch <= '7') { pCrtCh++; state = 12; } // octal
@@ -284,7 +283,7 @@ int getNextToken()
             return CT_INT;
         }
 
-        // ── STATES 15-19: CT_REAL ─────────────────────────────────────────────
+        //STATES 15-19: CT_REAL 
         // state 15: dupa '.' — cifre fractionale
         case 15:
             if (ch >= '0' && ch <= '9') pCrtCh++;
@@ -332,7 +331,7 @@ int getNextToken()
             }
             break;
 
-        // ── STATES 20-21: CT_STRING ───────────────────────────────────────────
+        //  STATES 20-21: CT_STRING 
         case 20:
             if (ch == '\\') { pCrtCh++; state = 21; }  // escape sequence
             else if (ch == '"') {
@@ -340,6 +339,8 @@ int getNextToken()
                 tk = addTk(CT_STRING);
                 tk->text = createString(pStartCh, pCrtCh);
                 pCrtCh++; // consuma "
+                if (pCrtCh == '"')
+                    tkerr(addTk(END), "unterminated string constant");
                 return CT_STRING;
             }
             else if (ch == '\0' || ch == '\n')
@@ -354,7 +355,7 @@ int getNextToken()
             state = 20;
             break;
 
-        // ── STATES 23-25: CT_CHAR ─────────────────────────────────────────────
+        //  STATES 23-25: CT_CHAR 
         case 23:
             if (ch == '\\') { pCrtCh++; state = 24; }  // escape
             else if (ch == '\'' || ch == '\0')
@@ -395,7 +396,7 @@ int getNextToken()
             else tkerr(addTk(END), "too many characters in char constant");
             break;
 
-        // ── STATES 30-33: == != <= >= ─────────────────────────────────────────
+        //  STATES 30-33: == != <= >= 
         case 30:
             if (ch == '=') { pCrtCh++; addTk(EQUAL);     return EQUAL; }
             else {                      addTk(ASSIGN);    return ASSIGN; }
@@ -412,7 +413,7 @@ int getNextToken()
             if (ch == '=') { pCrtCh++; addTk(GREATEREQ); return GREATEREQ; }
             else {                      addTk(GREATER);   return GREATER; }
 
-        // ── STATES 34-36, 39: / sau // sau /* */ ─────────────────────────────
+        // STATES 34-36, 39: / sau // sau /* */
         case 34:
             if (ch == '/')      { pCrtCh++; state = 35; }  // comentariu linie
             else if (ch == '*') { pCrtCh++; state = 36; }  // comentariu bloc
@@ -441,7 +442,7 @@ int getNextToken()
             else                { pCrtCh++; state = 36; }  // altceva, inapoi in bloc
             break;
 
-        // ── STATES 37-38: && || ───────────────────────────────────────────────
+        // STATES 37-38: && || 
         case 37:
             if (ch == '&') { pCrtCh++; addTk(AND); return AND; }
             else tkerr(addTk(END), "expected '&' after '&'");
@@ -452,6 +453,6 @@ int getNextToken()
             else tkerr(addTk(END), "expected '|' after '|'");
             break;
 
-        } // end switch
+        } // end switchs
     } // end while
 }
