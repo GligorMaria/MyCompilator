@@ -1,63 +1,32 @@
-// test variabile si tipuri
-int x = 42;
-double pi = 3.14;
-double stiintific = 1.5e10;
-char c = 'A';
-char escaped = '\n';
-char *s = "hello world";
-char *escaped_str = "line1\nline2";
-
-// test operatori aritmetici
-int suma = x + 5;
-int dif  = x - 3;
-int prod = x * 2;
-int cat  = x / 2;
-
-// test operatori relationali
-if (x == 42) { }
-if (x != 0)  { }
-if (x < 100) { }
-if (x > 0)   { }
-if (x <= 42) { }
-if (x >= 42) { }
-
-// test operatori logici
-if (x > 0 && x < 100) { }
-if (x == 0 || x == 42) { }
-if (!x) { }
-
-// test assign
-x = 99;
-
-// test structuri de control
-while (x > 0) {
-    x = x - 1;
-}
-
-for (int i = 0; i < 10; i = i + 1) {
-    int y = i * 2;
-}
-
-if (x == 0) {
-    return x;
-} else {
-    x = 1;
-}
-
-// test struct
 struct Point {
-    int px;
-    double py;
+    int x;
+    int y;
 };
 
-// test numere in diverse baze
-int zero       = 0;
-int octal      = 017;
-int hexa       = 0xAFd9;
+int add(int a, int b) {
+    return a + b;
+}
 
-// test comentariu bloc
-/* acesta este
-   un comentariu
-   pe mai multe linii */
+void main() {
+    int x;
+    double d;
+    char c;
 
-int final = 0;
+    x = 42;
+    d = 3.14;
+
+    if (x == 42) {
+        x = x + 1;
+    } else {
+        x = 0;
+    }
+
+    while (x > 0) {
+        x = x - 1;
+    }
+
+    for (x = 0; x < 10; x = x + 1) {
+        int y;
+        y = x * 2;
+    }
+}

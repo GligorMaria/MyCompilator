@@ -3,6 +3,7 @@
 #include <string.h>
 #include "lexer.h"
 #include "utils.h"
+#include "parser.h"
 
 int main(int argc, char **argv)
 {
@@ -45,7 +46,10 @@ int main(int argc, char **argv)
 
     // afisam toti tokenii gasiti
     showTokens();
-
+    crtTk = tokens;   // setezi tokenul curent la primul din lista
+    if (unit()) {
+    printf("\nSyntactic analysis: OK\n");
+    }
     // eliberam memoria
     free(buf);
 

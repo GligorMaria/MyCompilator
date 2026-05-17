@@ -240,9 +240,12 @@ int getNextToken()
             else if (ch >= '0' && ch <= '7') { pCrtCh++; state = 12; } // octal
             else if (ch == '.') { pCrtCh++; state = 15; }              // 0.ceva → real
             else if (ch == 'e' || ch == 'E') { pCrtCh++; state = 17; } // 0e... → real
+            
             else state = 13;                                             // doar "0"
             break;
 
+        case 10000:
+            if (ch<='0' && ch>='1')
         case 11:
             // cifre hex
             if (isxdigit(ch)) pCrtCh++;
@@ -339,8 +342,6 @@ int getNextToken()
                 tk = addTk(CT_STRING);
                 tk->text = createString(pStartCh, pCrtCh);
                 pCrtCh++; // consuma "
-                if (pCrtCh == '"')
-                    tkerr(addTk(END), "unterminated string constant");
                 return CT_STRING;
             }
             else if (ch == '\0' || ch == '\n')
