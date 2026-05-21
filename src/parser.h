@@ -1,6 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
-
+// prototipurile tuturor funcțiilor de parsare
 #include "lexer.h"
 
 // variabile globale

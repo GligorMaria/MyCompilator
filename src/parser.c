@@ -4,10 +4,10 @@
 #include "lexer.h"
 #include "utils.h"
 
+//verifică dacă ordinea tokenilor respectă regulile gramaticale
 Token *crtTk = NULL;
 Token *consumedTk = NULL;
 
-// ── consume ───────────────────────────────────────────────────────────────────
 int consume(int code)
 {
     if (crtTk->code == code) {
@@ -18,7 +18,7 @@ int consume(int code)
     return 0;
 }
 
-// ── unit: ( structDef | fnDef | varDef )* END ────────────────────────────────
+//unit: ( structDef | fnDef | varDef )* END 
 int unit()
 {
     while (1) {
@@ -32,7 +32,12 @@ int unit()
     return 1;
 }
 
-// ── structDef: STRUCT ID LACC varDef* RACC SEMICOLON ─────────────────────────
+// structDef: STRUCT ID LACC varDef* RACC SEMICOLON 
+/*
+Recunoaște o declarație de structură. Verifică că începe cu cuvântul struct, urmat de un nume, urmat de acoladă deschisă, 
+apoi câmpurile structurii, 
+și în final acoladă închisă cu punct și virgulă. Dacă nu vede struct la început, spune că nu e o structură și se oprește.
+*/
 int structDef()
 {
     Token *startTk = crtTk;
@@ -49,13 +54,14 @@ int structDef()
     return 1;
 }
 
-// ── varDef: typeBase ID arrayDecl? SEMICOLON ─────────────────────────────────
+// varDef: typeBase ID arrayDecl? SEMICOLON
 int varDef()
 {
     Token *startTk = crtTk;
     if (!typeBase()) return 0;
     if (!consume(ID)) {
         crtTk = startTk;
+        
         return 0;
     }
     arrayDecl(); // optional
@@ -64,7 +70,7 @@ int varDef()
     return 1;
 }
 
-// ── typeBase: INT | DOUBLE | CHAR | STRUCT ID ─────────────────────────────────
+// typeBase: INT | DOUBLE | CHAR | STRUCT ID 
 int typeBase()
 {
     Token *startTk = crtTk;
@@ -79,7 +85,7 @@ int typeBase()
     return 0;
 }
 
-// ── arrayDecl: LBRACKET CT_INT? RBRACKET ─────────────────────────────────────
+// arrayDecl: LBRACKET CT_INT? RBRACKET 
 int arrayDecl()
 {
     Token *startTk = crtTk;
@@ -90,7 +96,7 @@ int arrayDecl()
     return 1;
 }
 
-// ── fnDef: ( typeBase | VOID ) ID LPAR ( fnParam ( COMMA fnParam )* )? RPAR stmCompound
+// fnDef: ( typeBase | VOID ) ID LPAR ( fnParam ( COMMA fnParam )* )? RPAR stmCompound
 int fnDef()
 {
     Token *startTk = crtTk;
@@ -119,7 +125,7 @@ int fnDef()
     return 1;
 }
 
-// ── fnParam: typeBase ID arrayDecl? ──────────────────────────────────────────
+// fnParam: typeBase ID arrayDecl?
 int fnParam()
 {
     Token *startTk = crtTk;
@@ -132,7 +138,7 @@ int fnParam()
     return 1;
 }
 
-// ── stmCompound: LACC ( varDef | stm )* RACC ─────────────────────────────────
+// stmCompound: LACC ( varDef | stm )* RACC 
 int stmCompound()
 {
     Token *startTk = crtTk;
@@ -147,7 +153,7 @@ int stmCompound()
     return 1;
 }
 
-// ── stm ───────────────────────────────────────────────────────────────────────
+// stm 
 // stm: stmCompound
 //    | IF LPAR expr RPAR stm ( ELSE stm )?
 //    | WHILE LPAR expr RPAR stm
@@ -233,13 +239,13 @@ int stm()
     return 0;
 }
 
-// ── expr: exprAssign ──────────────────────────────────────────────────────────
+// expr: exprAssign 
 int expr()
 {
     return exprAssign();
 }
 
-// ── exprAssign: exprUnary ASSIGN exprAssign | exprOr ─────────────────────────
+// exprAssign: exprUnary ASSIGN exprAssign | exprOr
 int exprAssign()
 {
     Token *startTk = crtTk;
@@ -254,7 +260,7 @@ int exprAssign()
     return exprOr();
 }
 
-// ── exprOr (stanga-recursivitate eliminata) ───────────────────────────────────
+// exprOr (stanga-recursivitate eliminata)
 // exprOr  ::= exprAnd exprOr1
 // exprOr1 ::= OR exprAnd exprOr1 | ε
 int exprOr()
@@ -268,7 +274,7 @@ int exprOr()
     return 1;
 }
 
-// ── exprAnd (stanga-recursivitate eliminata) ──────────────────────────────────
+//exprAnd (stanga-recursivitate eliminata) 
 int exprAnd()
 {
     if (!exprEq()) return 0;
@@ -279,7 +285,7 @@ int exprAnd()
     return 1;
 }
 
-// ── exprEq (stanga-recursivitate eliminata) ───────────────────────────────────
+// exprEq (stanga-recursivitate eliminata)
 int exprEq()
 {
     if (!exprRel()) return 0;
@@ -291,7 +297,7 @@ int exprEq()
     return 1;
 }
 
-// ── exprRel (stanga-recursivitate eliminata) ──────────────────────────────────
+// exprRel (stanga-recursivitate eliminata) 
 int exprRel()
 {
     if (!exprAdd()) return 0;
@@ -304,7 +310,7 @@ int exprRel()
     return 1;
 }
 
-// ── exprAdd (stanga-recursivitate eliminata) ──────────────────────────────────
+// exprAdd (stanga-recursivitate eliminata) 
 int exprAdd()
 {
     if (!exprMul()) return 0;
@@ -316,7 +322,7 @@ int exprAdd()
     return 1;
 }
 
-// ── exprMul (stanga-recursivitate eliminata) ──────────────────────────────────
+// exprMul (stanga-recursivitate eliminata)
 int exprMul()
 {
     if (!exprCast()) return 0;
@@ -328,7 +334,7 @@ int exprMul()
     return 1;
 }
 
-// ── exprCast: LPAR typeBase arrayDecl? RPAR exprCast | exprUnary ──────────────
+// exprCast: LPAR typeBase arrayDecl? RPAR exprCast | exprUnary
 int exprCast()
 {
     Token *startTk = crtTk;
@@ -346,7 +352,7 @@ int exprCast()
     return exprUnary();
 }
 
-// ── exprUnary: ( SUB | NOT ) exprUnary | exprPostfix ─────────────────────────
+// exprUnary: ( SUB | NOT ) exprUnary | exprPostfix 
 int exprUnary()
 {
     if (crtTk->code == SUB || crtTk->code == NOT) {
@@ -358,7 +364,7 @@ int exprUnary()
     return exprPostfix();
 }
 
-// ── exprPostfix (stanga-recursivitate eliminata) ──────────────────────────────
+// exprPostfix (stanga-recursivitate eliminata) 
 // exprPostfix: exprPrimary ( LBRACKET expr RBRACKET | DOT ID )*
 int exprPostfix()
 {
@@ -379,7 +385,7 @@ int exprPostfix()
     return 1;
 }
 
-// ── exprPrimary ───────────────────────────────────────────────────────────────
+// exprPrimary 
 // exprPrimary: ID ( LPAR ( expr ( COMMA expr )* )? RPAR )?
 //            | CT_INT | CT_REAL | CT_CHAR | CT_STRING
 //            | LPAR expr RPAR
